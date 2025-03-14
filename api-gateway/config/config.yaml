@@ -1,0 +1,3 @@
+server_post: "8080"
+auth_service_address: "auth-service:8081"
+task_service_address: "task-service:8083"
