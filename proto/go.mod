@@ -1,4 +1,4 @@
-module github.com/annguyen0511/Task-ManagementRPSgame/proto
+module github.com/annguyen0511/Task-Management/proto
 
 go 1.22.2
 
