@@ -1,0 +1,37 @@
+syntax = "proto3";
+package auth;
+option go_package = "./proto"; // path to generated go files
+
+// Indetify AuthService service
+service AuthService{
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+}
+
+// Login request message
+message LoginRequest{
+    string email = 1;
+    string password = 2;
+}
+
+// Login response message
+message LoginResponse{
+    string token = 1; // JWT token if login is successful
+    string error = 2; // Error message if login is unsuccessful
+}
+
+// Register request message
+message RegisterRequest{
+    string email = 1;
+    string password = 2;
+}
+
+// Register response message
+message RegisterResponse{
+    string token = 1; // JWT token if registration is successful
+    string error = 2; // Error message if registration is unsuccessful
+}
+
+
+
+

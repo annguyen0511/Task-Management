@@ -1,0 +1,71 @@
+syntax = "proto3";
+package task;
+option go_package = "./proto";
+
+service TaskService{
+    rpc GetTask(GetTaskRequest) returns (GetTaskResponse) {}
+    rpc GetTasks(GetTasksRequest) returns (GetTasksResponse) {}
+    rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {}
+    rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse) {}
+    rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse) {}
+}
+
+message GetTaskRequest {
+    int32 id = 1; // Task ID
+    int32 user_id = 2; // User ID
+}
+
+message GetTaskResponse {
+    int32 id = 1; // Task ID
+    string title = 2; // Task title
+    string description = 3; // Task description
+    string status = 4; // Task status
+    string due_date = 5; // Task due date
+    string error = 6; // Error message if task is not found
+}
+
+message GetTasksRequest {
+    int32 user_id = 1; // User ID
+}
+
+message GetTasksResponse {
+    repeated Task tasks = 1; // List of tasks
+    string error = 2; // Error message if tasks are not found
+}
+
+message CreateTaskRequest {
+    int32 user_id = 1; // User ID
+    string title = 2; // Task title
+    string description = 3; // Task description
+    string status = 4; // Task status
+    string due_date = 5; // Task due date
+}
+
+message CreateTaskResponse {
+    int32 id = 1; // Task ID is created successfully
+    string error = 2; // Error message if task creation fails
+}
+
+message UpdateTaskRequest {
+    int32 id = 1; // Task ID
+    int32 user_id = 2; // User ID
+    string title = 3; // Task title
+    string description = 4; // Task description
+    string status = 5; // Task status
+    string due_date = 6; // Task due date
+}
+
+message UpdateTaskResponse {
+    int32 id = 1; // Task ID is updated successfully
+    string error = 2; // Error message if task update fails
+}
+
+message DeleteTaskRequest {
+    int32 id = 1; // Task ID
+    int32 user_id = 2; // User ID
+}
+
+message DeleteTaskResponse {
+    int32 id = 1; // Task ID is deleted successfully
+    string error = 2; // Error message if task deletion fails
+}
