@@ -69,3 +69,10 @@ message DeleteTaskResponse {
     int32 id = 1; // Task ID is deleted successfully
     string error = 2; // Error message if task deletion fails
 }
+message Task {
+    int32 id = 1; // Task ID
+    string title = 2; // Task title
+    string description = 3; // Task description
+    string status = 4; // Task status
+    string due_date = 5; // Task due date
+}
