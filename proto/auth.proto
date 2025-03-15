@@ -28,8 +28,9 @@ message RegisterRequest{
 
 // Register response message
 message RegisterResponse{
-    string token = 1; // JWT token if registration is successful
-    string error = 2; // Error message if registration is unsuccessful
+    string msg = 1; // Success message if registration is successful
+    string token = 2; // JWT token if registration is successful
+    string error = 3; // Error message if registration is unsuccessful
 }
 
 
