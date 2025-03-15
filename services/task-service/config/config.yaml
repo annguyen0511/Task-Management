@@ -1,0 +1,7 @@
+server_port: "8081"
+db_host: "postgres"
+db_port: "5432"
+db_user: "admin"
+db_password: "12345"
+db_name: "auth_db"
+jwt_secret: "my_secret_key"
