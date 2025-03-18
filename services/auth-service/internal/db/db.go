@@ -23,3 +23,12 @@ func InitDB(cfg config.Config) (*gorm.DB, error) {
 	return db, nil
 
 }
+
+func Close(db *gorm.DB) {
+	dbConn, err := db.DB()
+	if err != nil {
+		log.Println(err)
+	}
+	dbConn.Close()
+	log.Println("Closed connection to Postgres database")
+}
