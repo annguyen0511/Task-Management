@@ -2,14 +2,13 @@ package handlers
 
 import (
 	"context"
-	"crypto/sha256"
-	"fmt"
 	"time"
 
 	"github.com/annguyen0511/Task-Management/proto"
 	"github.com/annguyen0511/Task-Management/services/auth-service/config"
 	"github.com/annguyen0511/Task-Management/services/auth-service/internal/models"
 	"github.com/golang-jwt/jwt/v4"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -28,7 +27,10 @@ func NewAuthServer(db *gorm.DB, cfg config.Config) *AuthServer {
 
 func (s *AuthServer) Login(ctx context.Context, req *proto.LoginRequest) (*proto.LoginResponse, error) {
 	var user models.User
-	hashedPassword := fmt.Sprintf("%x", sha256.Sum256([]byte(req.Password)))
+	hashedPassword, err := hashedPassword(req.Password)
+	if err != nil {
+		return &proto.LoginResponse{Error: "Failed to hash password"}, nil
+	}
 	if err := s.DB.Where("email = ? AND password = ?", req.Email, hashedPassword).First(&user).Error; err != nil {
 		return &proto.LoginResponse{Error: "Invalid email or password"}, nil
 	}
@@ -41,7 +43,10 @@ func (s *AuthServer) Login(ctx context.Context, req *proto.LoginRequest) (*proto
 }
 
 func (s *AuthServer) Register(ctx context.Context, req *proto.RegisterRequest) (*proto.RegisterResponse, error) {
-	hashedPassword := fmt.Sprintf("%x", sha256.Sum256([]byte(req.Password)))
+	hashedPassword, err := hashedPassword(req.Password)
+	if err != nil {
+		return &proto.RegisterResponse{Error: "Failed to hash password"}, nil
+	}
 	user := models.User{
 		Email:    req.Email,
 		Password: hashedPassword,
@@ -64,3 +69,12 @@ func generateJWT(userID uint, secret string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(secret))
 }
+
+func hashedPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
+
+// func checkPassword(hashedPassword, password string) error {
+// 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+// }
